@@ -17,6 +17,7 @@ import YouTubePage from './pages/YouTubePage';
 import AuthCallbackPage from './pages/AuthCallbackPage';
 
 import YouTubeSchedulerPage from './pages/YouTubeSchedulerPage';
+import ShortsReportPage from './pages/ShortsReportPage';
 
 import { AuthProvider } from './context/AuthContext'; // Import AuthProvider
 
@@ -32,6 +33,7 @@ function App() {
           
           <Route path="youtube-shorts-content-factory" element={<YoutubeShortsContentFactoryPage />} />
           <Route path="youtube-scheduler" element={<YouTubeSchedulerPage />} />
+          <Route path="projects/:projectId/shorts/:shortId/report" element={<ShortsReportPage />} />
 
           {/* GCP Test Pages (Temporarily Disabled) */}
           {/* <Route path="login" element={<LoginPage />} /> */}

@@ -1,5 +1,5 @@
-import api from "../api";
-import type { Project, Short } from '../../types/youtube-shorts-content-factory/types';
+import api from "../api.js";
+import type { Project, Short, ReportData } from '../../types/youtube-shorts-content-factory/types.js';
 
 const projectService = {
   fetchProjects: async (): Promise<Project[]> => {
@@ -43,6 +43,11 @@ const projectService = {
   deleteShort: async (projectId: string, shortId: string): Promise<void> => {
     await api.delete(`/api/projects/${projectId}/shorts/${shortId}`);
   },
+
+  fetchShortsReport: async (projectId: string, shortId: string): Promise<ReportData> => {
+    const response = await api.get(`/api/projects/${projectId}/shorts/${shortId}/report`);
+    return response.data;
+  }
 };
 
 export default projectService;

@@ -13,8 +13,6 @@
     "strict": true,
     "skipLibCheck": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "outDir": "./dist"
-  },
-  "include": ["backend/**/*.ts", "src/**/*.ts"]
+    "noUnusedParameters": true
+  }
 }

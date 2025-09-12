@@ -9,8 +9,13 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY . /app
+
+RUN npm run tsc:backend # Compile TypeScript files
+
+RUN ls -l /app
+RUN ls -l /app/dist
 
 EXPOSE 3002
 
-CMD ["node", "backend/server.js"]
+CMD ["node", "/app/dist/backend/server.js"]

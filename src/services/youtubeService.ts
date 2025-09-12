@@ -1,5 +1,5 @@
-import api from './api';
-import type { YouTubeVideoDetails } from '../types/youtube-shorts-content-factory/types';
+import api from './api.js';
+import type { YouTubeVideoDetails } from '../types/youtube-shorts-content-factory/types.js';
 
 const youtubeService = {
   fetchVideoDetails: async (youtubeUrl: string): Promise<YouTubeVideoDetails> => {

@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "3002:3002"
+    environment:
+      NODE_ENV: development
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      SESSION_SECRET: your_session_secret_key # Replace with a strong secret
+    volumes:
+      - ./backend:/app/backend
+      - ./public:/app/public
+      - ./src/types:/app/src/types # Mount types for backend TS compilation
+      - shared_data:/app/services/puppeteer_worker/data # Shared volume for PDFs
+    depends_on:
+      - redis
+
+  puppeteer_worker:
+    build:
+      context: ./services/puppeteer_worker
+      dockerfile: Dockerfile
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    volumes:
+      - shared_data:/app/data # Volume for Puppeteer worker to save PDFs
+    depends_on:
+      - redis
+
+volumes:
+  redis_data:
+  shared_data:

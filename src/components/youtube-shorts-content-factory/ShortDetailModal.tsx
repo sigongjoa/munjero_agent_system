@@ -378,7 +378,8 @@ export const ShortDetailModal: React.FC<ShortDetailModalProps> = ({ short, onClo
 
             <div className="bg-gray-50 p-4 rounded-lg">
                 <h3 className="text-lg font-semibold mb-4 text-gray-800">쇼츠 만들기</h3>
-                <Button onClick={handleCreateShort} className="w-full">AI 쇼츠 생성기로 보내기</Button>
+                <Button onClick={handleCreateShort} className="w-full mb-2">AI 쇼츠 생성기로 보내기</Button>
+                <Button onClick={() => navigate(`/projects/${editableShort.projectId}/shorts/${editableShort.id}/report`)} className="w-full" variant="secondary">쇼츠 보고서 보기</Button>
             </div>
 
             {/* Metadata Section */}

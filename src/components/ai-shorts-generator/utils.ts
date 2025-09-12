@@ -1,4 +1,4 @@
-import type { ParsedTextPart, Template, ProjectSettings } from '../../types/ai-shorts-generator';
+import type { ParsedTextPart, Template, ProjectSettings } from '../../types/ai-shorts-generator.js';
 
 export const RENDER_DIMENSIONS = {
     '1:1': { width: 1080, height: 1080 },
@@ -191,6 +191,7 @@ export const drawStyledTextWithBackground = (ctx: CanvasRenderingContext2D, text
     });
 
     ctx.restore();
+    return currentY;
 };
 
 export const drawMultilineText = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number, fontSize: number, lineHeight: number, color: string, align: 'center' | 'left' | 'right' = 'center', weight: 'normal' | 'bold' = 'bold') => {

@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
-import type { Project } from '../../types/youtube-shorts-content-factory/types'; // Adjusted to import type
-import { ShortStatus } from '../../types/youtube-shorts-content-factory/types'; // ShortStatus is an enum, so regular import
+import type { Project } from '../../types/youtube-shorts-content-factory/types.js'; // Adjusted to import type
+import { ShortStatus } from '../../types/youtube-shorts-content-factory/types.js'; // ShortStatus is an enum, so regular import
 
 const initialProjects: Project[] = [
   {
@@ -17,7 +17,10 @@ const initialProjects: Project[] = [
         script: {
           idea: 'Explain the initial trademark issue with the word "ZERO".',
           draft: 'Coke wanted to trademark ZERO, but was it too generic? The courts had to decide if a common word could be owned. This was the central conflict.',
-          final: 'Can you own the word ZERO? Coca-Cola tried, but the courts pushed back. Here\'s the story of how they fought to own a number and why it mattered for their biggest launch ever. #cokewars'
+          hook: '',
+          immersion: '',
+          body: '',
+          cta: ''
         },
         metadata: {
           tags: 'coke, trademark, law, marketing',
@@ -34,7 +37,10 @@ const initialProjects: Project[] = [
         script: {
           idea: 'How did Pepsi react to Coke Zero? They launched their own "zero" calorie drink.',
           draft: 'Pepsi saw Coke\'s move and launched Pepsi Max, also a zero-calorie drink. It created a direct competition, forcing both brands to innovate.',
-          final: ''
+          hook: '',
+          immersion: '',
+          body: '',
+          cta: ''
         },
         metadata: {
           tags: 'pepsi, coke, competition, business',
@@ -51,7 +57,10 @@ const initialProjects: Project[] = [
         script: {
           idea: 'What was the final outcome of the trademark case and how it shaped the industry.',
           draft: '',
-          final: ''
+          hook: '',
+          immersion: '',
+          body: '',
+          cta: ''
         },
         metadata: {
           tags: '',
@@ -75,7 +84,10 @@ const initialProjects: Project[] = [
         script: {
           idea: 'A super simple explanation of what Crispr is, using an analogy like "molecular scissors".',
           draft: '',
-          final: ''
+          hook: '',
+          immersion: '',
+          body: '',
+          cta: ''
         },
         metadata: {
           tags: 'science, crispr, genetics, biology',

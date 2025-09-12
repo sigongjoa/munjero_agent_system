@@ -430,6 +430,42 @@ if (img) {
             );
             console.log(`[PUPPETEER] Image generation error for task ${task_id} reported to Redis.`);
         }
+    } else if (task.type === "generate_pdf_from_html") {
+        const { htmlContent, task_id } = task.payload;
+        console.log(`[PUPPETEER] Generating PDF for task: ${task_id}...`);
+
+        try {
+            await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+            const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });
+
+            const dataDir = path.join(__dirname, 'data'); // Use __dirname to ensure correct path within the worker
+            if (!fs.existsSync(dataDir)) {
+                fs.mkdirSync(dataDir, { recursive: true });
+            }
+            const pdfPath = path.join(dataDir, `${task_id}.pdf`);
+            fs.writeFileSync(pdfPath, pdfBuffer);
+
+            await redisClient.set(
+                PUPPETEER_RESPONSE_PREFIX + task_id,
+                JSON.stringify({ status: "success", pdfPath: `/data/${task_id}.pdf` }),
+                { EX: 300 }
+            );
+            console.log(`[PUPPETEER] PDF generated and saved to ${pdfPath} for task ${task_id}.`);
+        } catch (error) {
+            console.error(`[PUPPETEER] Error generating PDF for task ${task_id}:`, error);
+            const errorDetails = {
+                name: error.name || "Error",
+                message: error.message || "Unknown error",
+                stack: error.stack || "No stack trace",
+                timestamp: new Date().toISOString()
+            };
+            await redisClient.set(
+                PUPPETEER_RESPONSE_PREFIX + task_id,
+                JSON.stringify({ status: "error", error: errorDetails, timestamp: new Date().toISOString() }),
+                { EX: 300 }
+            );
+            console.log(`[PUPPETEER] PDF generation error for task ${task_id} reported to Redis.`);
+        }
     }
 
 
