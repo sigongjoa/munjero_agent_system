@@ -1,0 +1,73 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - '15173:5173'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - VITE_BACKEND_URL=http://localhost:13002
+      - VITE_PROXY_TARGET=http://backend:3002
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - '13002:3002'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3002/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: 'redis:7-alpine'
+    ports:
+      - '16379:6379'
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  puppeteer-worker:
+    build:
+      context: ./services/puppeteer_worker
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_HOST=redis
+      - SESSION_COOKIE=${SESSION_COOKIE}
+      - DISPLAY=${DISPLAY}
+    shm_size: '8gb'
+    mem_limit: 6g
+    volumes:
+      - ./services/puppeteer_worker:/app
+      - /app/node_modules
+      - /mnt/wslg/.X11-unix:/tmp/.X11-unix
+    tty: true
+    user: root
+
+volumes:
+  redis_data:

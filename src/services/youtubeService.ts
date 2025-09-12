@@ -1,0 +1,112 @@
+import api from './api';
+import type { YouTubeVideoDetails } from '../types/youtube-shorts-content-factory/types';
+
+const youtubeService = {
+  fetchVideoDetails: async (youtubeUrl: string): Promise<YouTubeVideoDetails> => {
+    const response = await api.post('/api/youtube/details', { youtubeUrl });
+    const rawData = response.data;
+
+    // Map raw API response to YouTubeVideoDetails interface
+    const mappedData: YouTubeVideoDetails = {
+      id: rawData.id,
+      title: rawData.snippet.title,
+      description: rawData.snippet.description,
+      publishedAt: rawData.snippet.publishedAt,
+      thumbnailUrl: rawData.snippet.thumbnails.default.url, // Assuming 'default' thumbnail
+      channelTitle: rawData.snippet.channelTitle,
+      tags: rawData.snippet.tags || [], // Tags might be missing
+      duration: rawData.contentDetails.duration,
+      viewCount: rawData.statistics.viewCount,
+      likeCount: rawData.statistics.likeCount,
+      commentCount: rawData.statistics.commentCount,
+    };
+    return mappedData;
+  },
+  listVideos: async (mine: boolean = true, part: string = 'snippet', maxResults: number = 10, pageToken?: string) => {
+    const response = await api.get('/api/youtube/videos', {
+      params: {
+        mine: mine ? 'true' : 'false',
+        part,
+        maxResults,
+        pageToken,
+      },
+    });
+    return response.data;
+  },
+
+  uploadVideo: async (videoFile: File, title: string, description: string, privacyStatus: string) => {
+    const formData = new FormData();
+    formData.append('video', videoFile);
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('privacyStatus', privacyStatus);
+
+    const response = await api.post('/api/youtube/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  updateVideo: async (videoId: string, title: string, description: string, privacyStatus: string) => {
+    const response = await api.put(`/api/youtube/videos/${videoId}`, {
+      title,
+      description,
+      privacyStatus,
+    });
+    return response.data;
+  },
+
+  deleteVideo: async (videoId: string) => {
+    const response = await api.delete(`/api/youtube/videos/${videoId}`);
+    return response.data;
+  },
+
+  // New function for video analysis
+  getVideoAnalysis: async (videoId: string) => {
+    const response = await api.get(`/api/youtube/videos/${videoId}/analyze`);
+    return response.data;
+  },
+
+  // New function for video analytics metrics
+  getVideoAnalyticsMetrics: async (videoId: string, startDate: string, endDate: string) => {
+    const response = await api.get(`/api/youtube/videos/${videoId}/analytics`, {
+      params: {
+        startDate,
+        endDate,
+      },
+    });
+    return response.data;
+  },
+
+  getComments: async (videoId: string) => {
+    const response = await api.get('/api/youtube/comments', {
+      params: { videoId },
+    });
+    return response.data;
+  },
+
+  updateComment: async (commentId: string, textOriginal: string) => {
+    const response = await api.put(`/api/youtube/comments/${commentId}`, {
+      textOriginal,
+    });
+    return response.data;
+  },
+
+  fetchPrivateVideos: async () => {
+    const response = await api.get('/api/youtube/private-videos');
+    return response.data;
+  },
+
+  schedulePublish: async (videoId: string, publishTime: Date, comments: string[]) => {
+    const response = await api.post('/api/youtube/schedule-publish', {
+      videoId,
+      publishTime,
+      comments,
+    });
+    return response.data;
+  },
+};
+
+export default youtubeService;

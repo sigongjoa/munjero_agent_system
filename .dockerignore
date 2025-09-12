@@ -1,0 +1,22 @@
+# Git
+.git
+.gitignore
+
+# Node
+node_modules
+
+# Docker
+Dockerfile*
+docker-compose.yml
+
+# Build output
+dist
+build
+
+# Env
+.env*
+
+# IDE / OS specific
+.vscode
+.idea
+*.swp

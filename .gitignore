@@ -1,0 +1,46 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Sensitive files
+.env
+metadata.json
+
+# Uploaded images
+public/uploads/images/
+
+# Temporary files
+server_temp.js
+commit_message.txt
+
+# Backend data
+backend/data/
+
+# Puppeteer worker sensitive files
+services/puppeteer_worker/cookies.json
+services/puppeteer_worker/localStorage.json
+services/puppeteer_worker/data/
+
+# Python cache
+__pycache__/
