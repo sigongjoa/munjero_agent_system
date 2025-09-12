@@ -1,7 +1,9 @@
 import request from "supertest";
 import app from "../server.js";
 import { createClient, RedisClientType } from "redis";
-import { Project } from "../../src/types/youtube-shorts-content-factory/types.js";
+import type { Project, Short } from "../../src/types/youtube-shorts-content-factory/types.js";
+import { ShortStatus } from "../../src/types/youtube-shorts-content-factory/types.js";
+
 
 let redisClient: RedisClientType;
 let testProject: Project;
@@ -26,7 +28,7 @@ beforeAll(async () => {
     projectId: "proj-1",
     title: "Test Short Title",
     description: "Test Short Description",
-    status: "Idea",
+    status: ShortStatus.IDEA, // Use enum value
     script: {
       idea: "Test Idea",
       draft: "Test Draft",

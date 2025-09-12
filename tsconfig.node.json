@@ -16,5 +16,6 @@
     "noUnusedParameters": true,
     "outDir": "./dist"
   },
-  "include": ["backend/**/*.ts", "src/**/*.ts"]
+  "include": ["backend/**/*.ts", "src/**/*.ts"],
+  "exclude": ["backend/tests"]
 }
